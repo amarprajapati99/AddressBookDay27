@@ -34,11 +34,15 @@ public class AddressBook {
         long number = sc.nextLong();
         System.out.println("enter email-id");
         String email = sc.next();
-        Contacts contact = new Contacts(firstName, lastName, address, city, state, zipCode, number, email);
-        contacts.put(indexValue, contact);
-         indexValue++;
+            if (addressbook.check(firstName)) {
+                add--;
+                continue;
+            }
+            Contacts contact = new Contacts(firstName, lastName, address, city, state, zipCode, number, email);
+            contacts.put(indexValue, contact);
+            indexValue++;
         }
-        System.out.println("Contact added Successfully");
+        System.out.println("\nContacts added Successfully");
     }
 
     private boolean check(String firstName) {
@@ -95,13 +99,7 @@ public class AddressBook {
             }
         }
     }
-
-    /* Description - create new address book */
-    public void createNewAddressBook() {
-        System.out.println("Enter the name for Address Book");
-        String addressBookName = sc.next();
-        AddressBookList addressBookListobj = new AddressBookList(addressBookName);
-    }
+    
     /* Description - delete contacts in address book  using their name */
     public void deleteContact() {
         if (contacts.isEmpty()) {
