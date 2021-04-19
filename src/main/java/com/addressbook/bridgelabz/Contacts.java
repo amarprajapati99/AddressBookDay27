@@ -3,7 +3,7 @@ package com.addressbook.bridgelabz;
 /* @Description - To create a contacts in address book with first name, last name, address, city, state,
  * zip,mobile number. */
 public class Contacts {
-    private String firstName;
+    public String firstName;
     private String lastName;
     private String address;
     private String city;
@@ -93,4 +93,6 @@ public class Contacts {
     }
 
 
+    public void put(int indexValue, Contacts contacts) {
+    }
 }
