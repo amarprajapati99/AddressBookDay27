@@ -44,6 +44,7 @@ public class AddressBook {
         }
         System.out.println("\nContacts added Successfully");
     }
+    /* to check duplicate entry if find duplicate are not allowed */
 
     private boolean check(String firstName) {
         if (contacts.isEmpty())
@@ -62,6 +63,7 @@ public class AddressBook {
         return false;
     }
     /* Description - edit contacts address book */
+    
     public void editContact(){
         if (contacts.isEmpty()) {
             System.out.println("Contact list is empty.");
