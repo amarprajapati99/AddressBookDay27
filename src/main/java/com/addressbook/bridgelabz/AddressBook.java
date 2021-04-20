@@ -198,7 +198,6 @@ public class AddressBook {
     public static void main(String[] args) {
         AddressBook addressbook = new AddressBook();
         addressbook.selectOption();
-
     }
 }
 
