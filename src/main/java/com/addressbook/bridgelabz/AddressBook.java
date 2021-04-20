@@ -12,7 +12,7 @@ public class AddressBook {
     public HashMap<Integer, Contacts> contacts = new HashMap<>();
     public static Scanner sc = new Scanner(System.in);
     static AddressBook addressbook = new AddressBook();
-
+/* @Description- To select the option what you want to do */
     public void selectOption() {
         int choice = 1;
         do {
@@ -23,6 +23,9 @@ public class AddressBook {
                     "\n4. Create New AddressBook" +
                     "\n5. Search Person By City" +
                     "\n6. Search Person By state" +
+                    "\n7. Count Person By City" +
+                    "\n8. Count Person By State" +
+                    "\n9. Sort Person" +
                     "\n0. Exit");
             int userInput = sc.nextInt();
             switch (userInput) {
@@ -49,6 +52,9 @@ public class AddressBook {
                     break;
                 case 8:
                     addressbook.countPersonByState();
+                    break;
+                case 9:
+                    addressbook.sortPersonByFirstname();
                     break;
                 default:
                     System.out.println("You press exit.\nThank You!");
@@ -90,8 +96,8 @@ public class AddressBook {
         }
         System.out.println("\nContacts added Successfully");
     }
-    /* to check duplicate entry if find duplicate are not allowed */
 
+    /* to check duplicate entry if find duplicate are not allowed */
     private boolean check(String firstName) {
         if (contacts.isEmpty())
             return false;
@@ -108,6 +114,7 @@ public class AddressBook {
         }
         return false;
     }
+
     /* Description - edit contacts address book */
     public void editContact() {
         if (contacts.isEmpty()) {
@@ -171,6 +178,7 @@ public class AddressBook {
         String addressBookName = sc.next();
         AddressBookList addressBookListobj = new AddressBookList(addressBookName);
     }
+
     /* Description - to search person by city name */
     public void searchPersonByCity() {
         System.out.println("Enter the city to search person.");
@@ -185,6 +193,7 @@ public class AddressBook {
             System.out.println(i.nextElement());
         }
     }
+
     /* Description - to search person by state wise */
     public void searchPersonByState() {
         System.out.println("Enter the state to search person.");
@@ -199,6 +208,7 @@ public class AddressBook {
             System.out.println(i.nextElement());
         }
     }
+
     /* Description - to count  person by state name */
     public void countPersonByState() {
         Collection<Contacts> values = contacts.values();
@@ -215,6 +225,20 @@ public class AddressBook {
         System.out.println(conatactlist.stream().collect(Collectors.groupingBy((Contacts C) -> C.getCity(),Collectors.counting())));
     }
 
+    /* Description - sort the entries in the address book alphabetically by Person’s name */
+    public void sortPersonByFirstname(){
+        Collection<Contacts> values = contacts.values();
+        ArrayList<Contacts> conatactlist
+                = new ArrayList<>(values);
+        System.out.println("Contact list before sorting the list");
+        for (Contacts cont : conatactlist){
+            System.out.println(cont.getFirstName() + cont.getLastName());
+        }
+        System.out.println("Contact list after sorting the list");
+        conatactlist.stream();
+        conatactlist.sort(Comparator.comparing(Contacts::getFirstName));
+        conatactlist.forEach((Contacts cont) -> System.out.println(cont.getFirstName() + " " + cont.getLastName()));
+    }
 
     public static void main(String[] args) {
         AddressBook addressbook = new AddressBook();
