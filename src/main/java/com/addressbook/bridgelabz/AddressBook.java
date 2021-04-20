@@ -44,6 +44,12 @@ public class AddressBook {
                 case 6:
                     addressbook.searchPersonByState();
                     break;
+                case 7:
+                    addressbook.countPersonByCity();
+                    break;
+                case 8:
+                    addressbook.countPersonByState();
+                    break;
                 default:
                     System.out.println("You press exit.\nThank You!");
                     choice = 0;
@@ -103,7 +109,6 @@ public class AddressBook {
         return false;
     }
     /* Description - edit contacts address book */
-
     public void editContact() {
         if (contacts.isEmpty()) {
             System.out.println("Contact list is empty.");
@@ -194,6 +199,22 @@ public class AddressBook {
             System.out.println(i.nextElement());
         }
     }
+    /* Description - to count  person by state name */
+    public void countPersonByState() {
+        Collection<Contacts> values = contacts.values();
+        ArrayList<Contacts> conatactlist
+                = new ArrayList<>(values);
+        System.out.println(conatactlist.stream().collect(Collectors.groupingBy((Contacts C) -> C.getState(),Collectors.counting())));
+    }
+
+    /* Description - to count  person by city name */
+    public void countPersonByCity() {
+        Collection<Contacts> values = contacts.values();
+        ArrayList<Contacts> conatactlist
+                = new ArrayList<>(values);
+        System.out.println(conatactlist.stream().collect(Collectors.groupingBy((Contacts C) -> C.getCity(),Collectors.counting())));
+    }
+
 
     public static void main(String[] args) {
         AddressBook addressbook = new AddressBook();
