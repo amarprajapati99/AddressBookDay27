@@ -22,7 +22,6 @@ public class Contacts {
         this.mobileNumber = mobileNumber;
         this.emailId = emailId;
     }
-
     public String getFirstName() {
         return firstName;
     }
@@ -67,14 +66,15 @@ public class Contacts {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 
     public long getMobileNumber() {
         return mobileNumber;
     }
-    public void setMobileNumber(long mobileNumber) {
+
+    public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
@@ -85,14 +85,18 @@ public class Contacts {
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
+
     @Override
-    public String toString(){
-        return this.firstName + " " + this.lastName + ":" + this.mobileNumber + ", " + this.emailId +  " "
-                + " address:" + this.address + ", state:" + this.state + ", city:" + this.city + ", zipCode:"
-                + this.zip;
-    }
-
-
-    public void put(int indexValue, Contacts contacts) {
+    public String toString() {
+        return "Contacts{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip=" + zip +
+                ", mobileNumber=" + mobileNumber +
+                ", emailId='" + emailId + '\'' +
+                '}';
     }
 }
