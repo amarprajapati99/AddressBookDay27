@@ -29,26 +29,26 @@ public class AddressBook {
         contacts1.setMobileNumber("8052636931");
         contacts1.setEmailId("amarprajapati99@gmail.com");
         contacts1.add(contacts1);
-        FileWriter filewriter1 = null;
+        FileWriter fileWriter = null;
         try {
-            filewriter1 = new FileWriter(filePath);
-            filewriter1.append("fName,lName,address,City,State,Zip,PhoneNumber,Email");
+            fileWriter = new FileWriter(filePath);
+            fileWriter.append("firstName,lastName,address,city,state,zip,mobileNumber,EmailId");
             for (Contacts ad : contacts) {
-                filewriter1.append(String.valueOf(ad.getFirstName()));
-                filewriter1.append(String.valueOf(ad.getLastName()));
-                filewriter1.append(String.valueOf(ad.getAddress()));
-                filewriter1.append(String.valueOf(ad.getCity()));
-                filewriter1.append(String.valueOf(ad.getState()));
-                filewriter1.append(String.valueOf(ad.getZip()));
-                filewriter1.append(String.valueOf(ad.getMobileNumber()));
-                filewriter1.append(String.valueOf(ad.getEmailId()));
+                fileWriter.append(String.valueOf(ad.getFirstName()));
+                fileWriter.append(String.valueOf(ad.getLastName()));
+                fileWriter.append(String.valueOf(ad.getAddress()));
+                fileWriter.append(String.valueOf(ad.getCity()));
+                fileWriter.append(String.valueOf(ad.getState()));
+                fileWriter.append(String.valueOf(ad.getZip()));
+                fileWriter.append(String.valueOf(ad.getMobileNumber()));
+                fileWriter.append(String.valueOf(ad.getEmailId()));
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                filewriter1.flush();
-                filewriter1.close();
+                fileWriter.flush();
+                fileWriter.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -93,7 +93,6 @@ public class AddressBook {
                 e.printStackTrace();
             }
         }
-
     }
 }
 
