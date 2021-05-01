@@ -1,98 +1,78 @@
 package com.addressbook.bridgelabz;
 
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 /* @Description - To create a contacts in address book with first name, last name, address, city, state,
-* zip,mobile number.*/
+* zip,mobile number using Json file .*/
 
 public class AddressBook {
-    public static void main(String[] args) {
-        String filePath = "C:\\Users\\Desktop\\CsvReader\\AddressBookIO";
-        System.out.println("Starting File writing :" + filePath);
-        writeCsv(filePath);
-        System.out.println("starting read file");
-        readCsv(filePath);
-    }
+    private static final String HOME = System.getProperty("user.dir");
+    private static final String fileName = "AddressBook.json";
+    private static final Path homePath = Paths.get(HOME);
+    private static final Gson gson = new GsonBuilder().create();
 
-    public static void writeCsv(String filePath) {
-        List<Contacts> contacts = new ArrayList<Contacts>();
-        Contacts contacts1 = new Contacts(filePath, filePath, filePath, filePath, filePath, filePath, filePath,
-                filePath, filePath);
-        contacts1.setFirstName("Prahlad");
-        contacts1.setLastName("Prajapati");
-        contacts1.setAddress("Azamgarh");
-        contacts1.setCity("Azamgarh");
-        contacts1.setState("up");
-        contacts1.setZip("223223");
-        contacts1.setMobileNumber("8052636931");
-        contacts1.setEmailId("amarprajapati99@gmail.com");
-        contacts1.add(contacts1);
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(filePath);
-            fileWriter.append("firstName,lastName,address,city,state,zip,mobileNumber,EmailId");
-            for (Contacts ad : contacts) {
-                fileWriter.append(String.valueOf(ad.getFirstName()));
-                fileWriter.append(String.valueOf(ad.getLastName()));
-                fileWriter.append(String.valueOf(ad.getAddress()));
-                fileWriter.append(String.valueOf(ad.getCity()));
-                fileWriter.append(String.valueOf(ad.getState()));
-                fileWriter.append(String.valueOf(ad.getZip()));
-                fileWriter.append(String.valueOf(ad.getMobileNumber()));
-                fileWriter.append(String.valueOf(ad.getEmailId()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+    /* @Description - To write  the contacts details. */
+    public static boolean jsonWrite(Contacts contacts) {
+        if (Files.exists(homePath)) {
+            Path filePath = Paths.get(HOME + "/" + fileName);
             try {
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void readCsv(String filePath) {
-        BufferedReader reader = null;
-        try {
-            List<Contacts> empContacts = new ArrayList<Contacts>();
-            String line = "";
-            reader = new BufferedReader(new FileReader(filePath));
-            reader.readLine();
-            while (( reader.readLine() != null)) {
-                String[] field = line.split(",");
-                if (!(field.length() <= 0)) {
-                    Contacts contacts = new Contacts(field, field, field, field, field, field, field, field,
-                            field);
-                    contacts.setFirstName("Prahlad");
-                    contacts.setLastName("Prajapati");
-                    contacts.setAddress("Azamgarh");
-                    contacts.setCity("Azamgarh");
-                    contacts.setState("up");
-                    contacts.setZip("223223");
-                    contacts.setMobileNumber("8052636931");
-                    contacts.setEmailId("amarprajapati99@gmail.com");
-                    contacts.add(contacts);
+                if (Files.exists(filePath)) {
+                    String s = gson.toJson(contacts);
+                    FileWriter fileWriter = new FileWriter(String.valueOf(filePath));
+                    fileWriter.write(s);
+                    fileWriter.close();
+                    return true;
+                } else {
+                    Files.createFile(filePath);
+                    String s = gson.toJson(contacts);
+                    FileWriter fileWriter = new FileWriter(String.valueOf(filePath));
+                    fileWriter.write(s);
+                    fileWriter.close();
+                    return true;
                 }
-            }
-            for (Contacts ad : empContacts) {
-                System.out.printf(
-                        "First Name = %s,Last Name = s, Address = %s, City = %s, State = %s,Zip = %s,Phone Number = %s,Email = %s",
-                        ad.getFirstName(), ad.getLastName(), ad.getAddress(), ad.getCity(), ad.getState(), ad.getZip(),
-                        ad.getMobileNumber(), ad.getEmailId());
-            }
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        } finally {
-            try {
-                reader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                return false;
             }
         }
+        return true;
+    }
+    /* @Description - To read the contacts details. */
+
+    public static boolean jsonRead() {
+        if (Files.exists(homePath)) {
+            Path filePath = Paths.get(HOME + "/" + fileName);
+            try {
+                if (Files.exists(filePath)) {
+                    BufferedReader br = new BufferedReader(
+                            new FileReader(String.valueOf(filePath)));
+                    Contacts contactPerson = gson.fromJson(br, Contacts.class);
+                    System.out.println("ContactPerson{" +
+                            "firstName='" + contactPerson.firstName + '\'' +
+                            ", lastName='" + contactPerson.lastName + '\'' +
+                            ", address='" + contactPerson.address + '\'' +
+                            ", city='" + contactPerson.city + '\'' +
+                            ", state='" + contactPerson.state + '\'' +
+                            ", zip=" + contactPerson.zip +
+                            ", mobileNumber='" + contactPerson.mobileNumber + '\'' +
+                            ", email='" + contactPerson.emailId + '\'' +
+                            '}' );
+                    return true;
+                }
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
