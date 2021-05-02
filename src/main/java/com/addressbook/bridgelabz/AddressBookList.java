@@ -26,4 +26,18 @@ public class AddressBookList {
             return this.addressBookList = addressBook.getAddressBookDataUsingDB();
         return null;
     }
+
+    public void updateContact(String address, String name) {
+        int result = addressBook.updateContactDetails(name, address);
+    }
+
+    public boolean checkAddressBookInSyncWithDB(String name) {
+        List<Contacts> contacts = addressBook.getEmployeePayrollData(name);
+        return contacts.get(0).equals(getEmployeePayrollData(name));
+    }
+
+    private Contacts getEmployeePayrollData(String name) {
+        return this.addressBookList.stream().filter(employeePayrollDataItem ->
+                employeePayrollDataItem.firstName.equals(name)).findFirst().orElse(null);
+    }
 }

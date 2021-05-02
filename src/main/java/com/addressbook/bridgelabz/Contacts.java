@@ -1,8 +1,11 @@
 package com.addressbook.bridgelabz;
 
+import java.util.Objects;
+
 /* @Description - To create a contacts in address book with first name, last name, address, city, state,
  * zip,mobile number. */
 public class Contacts {
+    public  int id;
     public String firstName;
     static String lastName;
     public final String address;
@@ -12,7 +15,8 @@ public class Contacts {
     public long mobileNumber;
     public String emailId;
 
-    public Contacts(String firstName, String lastName, String address, String city, String state, int zip, long mobileNumber, String emailId) {
+    public Contacts(int id, String firstName, String lastName, String address, String city, String state, int zip, long mobileNumber, String emailId) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -86,6 +90,7 @@ public class Contacts {
     @Override
     public String toString() {
         return "Contacts{" +
+                "id='" + id + '\'' +
                 "firstName='" + firstName + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
@@ -94,5 +99,14 @@ public class Contacts {
                 ", mobileNumber=" + mobileNumber +
                 ", emailId='" + emailId + '\'' +
                 '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contacts that = (Contacts) o;
+        return id == that.id && zip == that.zip && mobileNumber == that.mobileNumber && Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(city, that.city)
+                && Objects.equals(state, that.state) && Objects.equals(emailId, that.emailId);
     }
 }
