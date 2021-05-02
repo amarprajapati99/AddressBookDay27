@@ -23,4 +23,17 @@ public class AddressBookTest {
         boolean result = addressBookList.checkAddressBookInSyncWithDB("Prahlad");
         Assertions.assertTrue(result);
     }
+    @Test
+    public void givenContactDataInDB_whenCountByCity_ShouldMatchWithExpectedValue() {
+        addressBookList = new AddressBookList();
+        List<Contacts>  addressBookDataList = addressBookList.countByCity("Azamgarh");
+        Assertions.assertEquals(3, addressBookDataList.size());
+    }
+
+    @Test
+    public void givenContactDataInDB_whenCountByState_ShouldMatchWithExpectedValue() {
+        addressBookList = new AddressBookList();
+        List<Contacts>  addressBookDataList = addressBookList.countByState("up");
+        Assertions.assertEquals(2, addressBookDataList.size());
+    }
 }

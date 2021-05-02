@@ -51,7 +51,7 @@ public class AddressBook {
         }
         return 0;
     }
-
+    /* @Description- to used the sql query for the first name  */
     public List<Contacts> getEmployeePayrollData(String name) {
         List<Contacts> contacts = null;
         String sql = "SELECT * FROM address_book WHERE firstName = ?";
@@ -78,7 +78,7 @@ public class AddressBook {
         return null;
     }
 
-
+    /* @Description- to update number of Contacts in the Database */
     private List<Contacts> getEmployeePayrollData(ResultSet resultSet) {
         List<Contacts> contacts = new ArrayList<>();
         try {
@@ -94,6 +94,34 @@ public class AddressBook {
                 String emailId = resultSet.getString("emailId");
                 contacts.add(new Contacts(id,firstName, lastName, address, city, state, zip, mobileNumber, emailId));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contacts;
+    }
+/* @Description- to Retrieve number of Contacts in the Database by City */
+
+    public List<Contacts> getCount(String city) {
+        List<Contacts> contacts = new ArrayList<>();
+        String sql = String.format("SELECT * FROM address_book where city = '%s';", city);
+        try (Connection connection = this.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            contacts = this.getEmployeePayrollData(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contacts;
+    }
+    /* @Description- to Retrieve number of Contacts in the Database by state */
+
+    public List<Contacts> getCountByState(String state) {
+        List<Contacts> contacts = new ArrayList<>();
+        String sql = String.format("SELECT * FROM Address_Book where state = '%s';", state);
+        try (Connection connection = this.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            contacts = this.getEmployeePayrollData(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
