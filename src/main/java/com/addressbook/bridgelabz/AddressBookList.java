@@ -4,6 +4,9 @@ import java.util.List;
 
 public class AddressBookList {
     private List<Contacts> addressBookList;
+    public AddressBook getAddressBook() {
+        return addressBook;
+    }
 
     public enum IOService {
         DB_IO
@@ -28,7 +31,7 @@ public class AddressBookList {
     }
 
     public void updateContact(String address, String name) {
-        int result = addressBook.updateContactDetails(name, address);
+        addressBook.updateContactDetails(name, address);
     }
 
     public boolean checkAddressBookInSyncWithDB(String name) {
@@ -47,5 +50,9 @@ public class AddressBookList {
 
     public List<Contacts> countByState(String state) {
         return addressBook.getCountByState(state);
+    }
+
+    public void addContactToAddressBook(String firstName, String lastName, String address, String city, String state, int zip, long mobileNumber, String email) {
+        addressBookList.add(addressBook.addContact(firstName, lastName, address, city, state, zip, mobileNumber, email));
     }
 }
