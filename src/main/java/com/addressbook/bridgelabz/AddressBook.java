@@ -29,19 +29,19 @@ public class AddressBook {
 
     public List<Contacts> getAddressBookDataUsingDB() {
         String sql = "SELECT * FROM address_book";
-        List<Contacts> addressBook = new ArrayList<>();
+        List<Contacts> contacts = new ArrayList<>();
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            addressBook = getAddressBookDataList(resultSet);
+            contacts = getAddressBookDataList(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return addressBook;
+        return contacts;
     }
 
     private List<Contacts> getAddressBookDataList(ResultSet resultSet) {
-        List<Contacts> addressBook = new ArrayList<>();
+        List<Contacts> contacts = new ArrayList<>();
         try {
             while (resultSet.next()) {
                 String firstName = resultSet.getString("firstname");
@@ -52,18 +52,12 @@ public class AddressBook {
                 int zip = resultSet.getInt("zip");
                 long mobileNumber = resultSet.getLong("mobileNumber");
                 String emailId = resultSet.getString("emailId");
-                addressBook.add(new Contacts(firstName, lastName, address, city, state, zip, mobileNumber, emailId));
+                contacts.add(new Contacts(firstName, lastName, address, city, state, zip, mobileNumber, emailId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return addressBook;
-    }
-
-    public static void main(String[] args) {
-        AddressBook addressBook = new AddressBook();
-        addressBook.getAddressBookDataUsingDB();
-
+        return contacts;
     }
 }
 
