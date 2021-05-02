@@ -1,78 +1,69 @@
 package com.addressbook.bridgelabz;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-
-/* @Description - To create a contacts in address book with first name, last name, address, city, state,
-* zip,mobile number using Json file .*/
+/* @Description - To connect the jdbc server using mysql and retrieve the data from
+* the address book table */
 
 public class AddressBook {
-    private static final String HOME = System.getProperty("user.dir");
-    private static final String fileName = "AddressBook.json";
-    private static final Path homePath = Paths.get(HOME);
-    private static final Gson gson = new GsonBuilder().create();
+    private static AddressBook addressBook;
 
-    /* @Description - To write  the contacts details. */
-    public static boolean jsonWrite(Contacts contacts) {
-        if (Files.exists(homePath)) {
-            Path filePath = Paths.get(HOME + "/" + fileName);
-            try {
-                if (Files.exists(filePath)) {
-                    String s = gson.toJson(contacts);
-                    FileWriter fileWriter = new FileWriter(String.valueOf(filePath));
-                    fileWriter.write(s);
-                    fileWriter.close();
-                    return true;
-                } else {
-                    Files.createFile(filePath);
-                    String s = gson.toJson(contacts);
-                    FileWriter fileWriter = new FileWriter(String.valueOf(filePath));
-                    fileWriter.write(s);
-                    fileWriter.close();
-                    return true;
-                }
-            } catch (IOException e) {
-                return false;
-            }
-        }
-        return true;
+    public static AddressBook getInstance() {
+        if (addressBook == null)
+            addressBook = new AddressBook();
+        return addressBook;
     }
-    /* @Description - To read the contacts details. */
 
-    public static boolean jsonRead() {
-        if (Files.exists(homePath)) {
-            Path filePath = Paths.get(HOME + "/" + fileName);
-            try {
-                if (Files.exists(filePath)) {
-                    BufferedReader br = new BufferedReader(
-                            new FileReader(String.valueOf(filePath)));
-                    Contacts contactPerson = gson.fromJson(br, Contacts.class);
-                    System.out.println("ContactPerson{" +
-                            "firstName='" + contactPerson.firstName + '\'' +
-                            ", lastName='" + contactPerson.lastName + '\'' +
-                            ", address='" + contactPerson.address + '\'' +
-                            ", city='" + contactPerson.city + '\'' +
-                            ", state='" + contactPerson.state + '\'' +
-                            ", zip=" + contactPerson.zip +
-                            ", mobileNumber='" + contactPerson.mobileNumber + '\'' +
-                            ", email='" + contactPerson.emailId + '\'' +
-                            '}' );
-                    return true;
-                }
-            } catch (IOException e) {
-                return false;
-            }
+    private Connection getConnection() throws  SQLException {
+        String jdbcURL = "jdbc:mysql://localhost:3306/address_book?useSSL=false";
+        String userName = "root";
+        String password = "root";
+        Connection connection;
+        System.out.println("Connecting to database:" + jdbcURL);
+        connection = DriverManager.getConnection(jdbcURL, userName, password);
+        System.out.println("Connection is successful!" + connection);
+        return connection;
+    }
+
+    public List<Contacts> getAddressBookDataUsingDB() {
+        String sql = "SELECT * FROM address_book";
+        List<Contacts> addressBook = new ArrayList<>();
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            addressBook = getAddressBookDataList(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return true;
+        return addressBook;
+    }
+
+    private List<Contacts> getAddressBookDataList(ResultSet resultSet) {
+        List<Contacts> addressBook = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                String firstName = resultSet.getString("firstname");
+                String lastName = resultSet.getString("lastname");
+                String address = resultSet.getString("address");
+                String city = resultSet.getString("city");
+                String state = resultSet.getString("state");
+                int zip = resultSet.getInt("zip");
+                long mobileNumber = resultSet.getLong("mobileNumber");
+                String emailId = resultSet.getString("emailId");
+                addressBook.add(new Contacts(firstName, lastName, address, city, state, zip, mobileNumber, emailId));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return addressBook;
+    }
+
+    public static void main(String[] args) {
+        AddressBook addressBook = new AddressBook();
+        addressBook.getAddressBookDataUsingDB();
+
     }
 }
 
