@@ -51,12 +51,12 @@ public class AddressBookTest {
     @Test
     public void given6Employees_WhenAdded_Should_ShouldMatchEmpEntries() {
         Contacts[] arrayOfContacts = {
-                new Contacts(0, "Neha", "Zade", "Sai Nagar","Nagpur", "MH", 789654,
-                        753964125, "nehazade@gmail.com"),
-                new  Contacts(0, "Apurva", "Yende", "Keshav Nagar","Pune", "MH", 969654,
-                        972431556, "apurva.yende@gmail.com"),
-                new Contacts(0, "Sakshi", "Shende", "Reddy Streat","Shriperumbudur", "TN", 549678,
-                        925461375, "sakshishende@gmail.com")
+                new Contacts(0, "Chandan", "Singh", "Sai Nagar","Lucknow", "up", 226001,
+                        7539641250L, "chandan@gmail.com"),
+                new  Contacts(0, "Ganesh", "singh", "Keshav Nagar","Pune", "MH", 969654,
+                        9724315568L, "ganesh.singh@gmail.com"),
+                new Contacts(0, "Mukesh", "Prajapati", "Mahadeva","Akabrpur", "up", 549678,
+                        9254613757L, "mk.1sep@gmail.com")
         };
         AddressBookList addressBookList = new AddressBookList();
         addressBookList.readAddressBookData(AddressBookList.IOService.DB_IO);
