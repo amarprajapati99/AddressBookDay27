@@ -147,6 +147,26 @@ public class AddressBook {
         }
         return contacts;
     }
+    /* @Description- to add multiple  contact to address book database using sql statement */
+
+    public Contacts addContact(String firstName, String lastName, String address, String city, String state, int zip, Long mobileNumber, String emailId) {
+        int contactId = -1;
+        Contacts contacts = null;
+        String sql = String.format("INSERT INTO address_book (firstName, lastName, address, city, state, zip, mobileNumber, email)" +
+                "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", firstName, lastName, address, city, state, zip, Long.valueOf(mobileNumber), emailId);
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+            if (rowAffected == 1) {
+                ResultSet resultSet = statement.getGeneratedKeys();
+                if (resultSet.next()) contactId = resultSet.getInt(1);
+            }
+            contacts = new Contacts(contactId, firstName, lastName, address, city, state, zip, Long.valueOf(mobileNumber), emailId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contacts;
+    }
 }
 
 
